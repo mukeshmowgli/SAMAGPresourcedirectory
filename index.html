@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A comprehensive directory of trusted Australian health resources for patients and practitioners, collated by TheSamaGP. Find support for mental health, chronic conditions, and more.">
     <title>Australian Health & Wellbeing Resource Directory</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,6 +38,10 @@
         .resource-card {
             transition: all 0.2s ease-in-out;
             border: 1px solid #E5E7EB;
+        }
+        .blog-card {
+            background-color: #f7fafc;
+            border-left: 4px solid #4b5563;
         }
         .visit-btn {
             background-color: #4b5563; /* Main button color */
@@ -74,6 +79,10 @@
             <button class="filter-btn active" data-category="all">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" /></svg>
                 <span>Show All</span>
+            </button>
+            <button class="filter-btn" data-category="thesamagp-blog">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>
+                <span>From the Blog</span>
             </button>
             <button class="filter-btn" data-category="mental-health">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zm-1.5 5.5A2.5 2.5 0 005 9.5V8a1 1 0 00-2 0v1.5a4.5 4.5 0 109 0V8a1 1 0 00-2 0v1.5a2.5 2.5 0 00-2.5 2.5h-2z" /></svg>
@@ -119,6 +128,11 @@
 
     <script>
         const resources = [
+            // From TheSamaGP Blog
+            { name: "Navigating Night-Time Wetting: A Guide for Parents", url: "https://thesamagp.com/navigating-night-time-wetting-a-guide-for-parents-and-carers", description: "An article from TheSamaGP exploring the causes of bedwetting (enuresis) in children and offering practical advice and support for families.", category: "thesamagp-blog", keywords: "bed wetting enuresis children parents guide night time wetting kids" },
+            { name: "The PSA Test: A Simple Blood Test, A Complicated Decision", url: "https://thesamagp.com/the-psa-test-a-simple-blood-test-a-complicated-decision", description: "An in-depth look at the pros and cons of Prostate-Specific Antigen (PSA) testing for prostate cancer screening, from TheSamaGP.", category: "thesamagp-blog", keywords: "psa test prostate cancer screening mens health blood test" },
+            { name: "Breathe Easier: Australia's New Lung Cancer Screening Program", url: "https://thesamagp.com/breathe-easier-a-guide-to-australias-new-lung-cancer-screening-program", description: "TheSamaGP explains the new national lung cancer screening program, who is eligible, and what it involves.", category: "thesamagp-blog", keywords: "lung cancer screening program smoking copd breathing" },
+
             // Mental Health
             { name: "Alcohol & Drug Foundation", url: "https://adf.org.au/", description: "Focuses on preventing alcohol and other drug harm in communities through information, resources, and prevention programs.", category: "mental-health", keywords: "alcohol drugs addiction rehab drug prevention substance use dependency" },
             { name: "Beyond Blue", url: "https://www.beyondblue.org.au/", description: "Provides information and support for anxiety, depression, and suicide prevention. Offers online forums, a 24/7 support service, and resources for all Australians.", category: "mental-health", keywords: "sad worried stressed mental health depression anxiety suicide support service helpline forums postnatal depression PND mental wellbeing" },
@@ -244,7 +258,9 @@
                 noResults.classList.add('hidden');
                 filteredResources.forEach(resource => {
                     const card = document.createElement('div');
-                    card.className = 'resource-card bg-white rounded-lg shadow-md p-6 flex flex-col hover:shadow-xl hover:-translate-y-1';
+                    
+                    const isBlog = resource.category === 'thesamagp-blog';
+                    card.className = `resource-card bg-white rounded-lg shadow-md p-6 flex flex-col hover:shadow-xl hover:-translate-y-1 ${isBlog ? 'blog-card' : ''}`;
                     card.dataset.category = resource.category;
 
                     card.innerHTML = `
@@ -252,8 +268,8 @@
                             <h3 class="text-xl font-bold text-[#1a1a1a] mb-2">${resource.name}</h3>
                             <p class="text-[#56585e] mb-4">${resource.description}</p>
                         </div>
-                        <a href="${resource.url}" target="_blank" rel="noopener noreferrer" class="visit-btn inline-block mt-auto text-white font-semibold py-2 px-4 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-[#4b5563] focus:ring-opacity-50">
-                            Visit Website
+                        <a href="${resource.url}" target="_blank" class="visit-btn inline-block mt-auto text-white font-semibold py-2 px-4 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-[#4b5563] focus:ring-opacity-50">
+                            ${isBlog ? 'Read on TheSamaGP' : 'Visit Website'}
                         </a>
                     `;
                     grid.appendChild(card);
